@@ -1,0 +1,8 @@
+{
+  "extends": "@cstrlcs/configs/tsconfigs/base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": { "@/*": ["./src/*"] }
+  },
+  "include": ["src"]
+}
