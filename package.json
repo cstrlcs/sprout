@@ -3,7 +3,12 @@
   "type": "module",
   "version": "0.1.2",
   "description": "Simple seeded fake data generator for TypeScript",
+  "author": "Lucas Castro (https://github.com/cstrlcs/)",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cstrlcs/sprout.git"
+  },
   "keywords": ["fake", "data", "generator", "seed"],
   "exports": {
     ".": {
