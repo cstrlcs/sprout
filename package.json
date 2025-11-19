@@ -1,7 +1,7 @@
 {
-  "name": "sprout",
+  "name": "@cstrlcs/sprout",
   "type": "module",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Simple seeded fake data generator for TypeScript",
   "license": "MIT",
   "keywords": ["fake", "data", "generator", "seed"],
@@ -14,7 +14,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build:js": "bun build src/index.ts --outdir dist --target bun --external typescript --minify",
-    "build:dts": "tsc --noEmit false --emitDeclarationOnly --declaration",
+    "build:dts": "tsc --noEmit false --emitDeclarationOnly --declaration --declarationDir dist && tsc-alias -p tsconfig.json --outDir dist",
     "build": "bun run build:js && bun run build:dts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -25,6 +25,7 @@
     "@cstrlcs/configs": "latest",
     "@types/bun": "latest",
     "eslint": "latest",
+    "tsc-alias": "^1.8.16",
     "typescript": "latest"
   }
 }
