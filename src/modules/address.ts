@@ -1,12 +1,11 @@
-import type { Rng } from "../core/rng";
+import type { Rng } from "@/core/rng";
 
+import { fromArray, fromFactory, int } from "@/core/utils";
 import cities from "@/data/pt-BR/address/cities.json";
 import codes from "@/data/pt-BR/address/codes.json";
 import countries from "@/data/pt-BR/address/countries.json";
 import states from "@/data/pt-BR/address/states.json";
 import streets from "@/data/pt-BR/address/streets.json";
-
-import { fromArray, fromFactory, int } from "../core/utils";
 
 export function createAddressDomain(rng: Rng) {
   const buildingNumber = fromFactory(() => String(int(rng, 1, 3999)));

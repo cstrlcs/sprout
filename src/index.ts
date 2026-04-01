@@ -1,12 +1,15 @@
+import { hashSeed, mulberry32, type Rng } from "@/core/rng";
 import { createAddressDomain } from "@/modules/address";
 import { createAutomotiveDomain } from "@/modules/automotive";
 import { createCompanyDomain } from "@/modules/company";
 import { createLoremDomain } from "@/modules/lorem";
 import { createPersonDomain } from "@/modules/person";
-import { hashSeed, mulberry32, type Rng } from "@/core/rng";
 
 let rng: Rng = mulberry32(Date.now());
-interface State<T> { pool: T[]; index: number }
+interface State<T> {
+  pool: T[];
+  index: number;
+}
 
 interface Sprout {
   (seed?: string | number): void;
@@ -17,7 +20,7 @@ interface Sprout {
   company: ReturnType<typeof createCompanyDomain>;
 
   from: <T>(count: number, fn: () => T) => T[];
-  pick: <T>(array: T[]) => T;
+  pick: <T>(array: readonly T[]) => T;
   unique: <T>(array: readonly T[]) => T | never;
 }
 
@@ -46,10 +49,10 @@ sproutFn.from = function from<T>(count: number, fn: () => T): T[] {
   return Array.from({ length: count }, fn);
 };
 
-sproutFn.pick = function pick<T>(array: T[]): T {
+sproutFn.pick = function pick<T>(array: readonly T[]): T {
   const item = array[Math.floor(rng() * array.length)];
 
-  if (!item) {
+  if (item === undefined) {
     throw new Error("pick() called with an empty array");
   }
 
@@ -57,7 +60,6 @@ sproutFn.pick = function pick<T>(array: T[]): T {
 };
 
 const uniqueStateByKey = new Map<string, State<unknown>>();
-// Prevent memory leaks
 const UNIQUE_CACHE_MAX_SIZE = 1000;
 
 function keyFor(array: readonly unknown[]): string {
@@ -66,7 +68,6 @@ function keyFor(array: readonly unknown[]): string {
 
 function manageCacheSize() {
   if (uniqueStateByKey.size > UNIQUE_CACHE_MAX_SIZE) {
-    // Remove oldest entries (simple FIFO cleanup)
     const keysToDelete = [...uniqueStateByKey.keys()].slice(0, UNIQUE_CACHE_MAX_SIZE / 2);
     for (const key of keysToDelete) {
       uniqueStateByKey.delete(key);
@@ -100,7 +101,6 @@ sproutFn.unique = function unique<T>(array: readonly T[]): T {
 
     state = { pool, index: 0 };
 
-    // Manage cache size to prevent memory leaks
     manageCacheSize();
     uniqueStateByKey.set(key, state as State<unknown>);
   }

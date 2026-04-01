@@ -24,8 +24,20 @@ Curabitur sed dolor ut orci cursus ultricies. Fusce odio tellus, elementum et pu
 
 export function createLoremDomain(rng: Rng) {
   const paragraph = fromArray(rng, lorem.split(/\n+/));
-  const sentence = fromArray(rng, lorem.split(/[\.\!\?]+/).map((s) => s.trim()).filter(Boolean));
-  const word = fromArray(rng, lorem.split(/\s+/).map((s) => s.trim()).filter(Boolean));
+  const sentence = fromArray(
+    rng,
+    lorem
+      .split(/[.!?]+/)
+      .map((s) => s.trim())
+      .filter(Boolean),
+  );
+  const word = fromArray(
+    rng,
+    lorem
+      .split(/\s+/)
+      .map((s) => s.trim())
+      .filter(Boolean),
+  );
 
   return { paragraph, sentence, word };
 }

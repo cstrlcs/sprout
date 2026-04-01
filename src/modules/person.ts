@@ -8,9 +8,7 @@ export function createPersonDomain(rng: Rng) {
   const name = fromArray(rng, names);
   const lastName = fromArray(rng, lastNames);
 
-  const fullName = fromFactory(
-    () => `${name()} ${lastName()}`,
-  );
+  const fullName = fromFactory(() => `${name()} ${lastName()}`);
 
   return { name, lastName, fullName };
 }

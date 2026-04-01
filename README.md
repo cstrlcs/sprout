@@ -7,17 +7,17 @@ Fake data generator with seed support. WIP.
 ```typescript
 import { sprout } from "sprout";
 
-xsprout.person.name();       // "João"
-sprout.person.fullName();    // "Maria Silva"
-sprout.address.cityName();   // "São Paulo"
-sprout.company.name();       // "Tech Solutions Ltda"
+xsprout.person.name(); // "João"
+sprout.person.fullName(); // "Maria Silva"
+sprout.address.cityName(); // "São Paulo"
+sprout.company.name(); // "Tech Solutions Ltda"
 
 // Use with seed for consistent results
 sprout(12345);
-sprout.person.name();        // Always returns the same name
+sprout.person.name(); // Always returns the same name
 
 // Generate arrays
-sprout.from(3, () => sprout.person.name());  // ["Ana", "Carlos", "Lucia"]
+sprout.from(3, () => sprout.person.name()); // ["Ana", "Carlos", "Lucia"]
 ```
 
 ## Roadmap

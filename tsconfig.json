@@ -1,8 +1,11 @@
 {
-  "extends": "@cstrlcs/configs/tsconfigs/base.json",
+  "extends": "@cstrlcs/configs/tsconfig/base.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": { "@/*": ["./src/*"] }
+    "types": ["bun-types"],
+    "rootDir": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
-  "include": ["src"]
+  "include": ["src", "tests"]
 }

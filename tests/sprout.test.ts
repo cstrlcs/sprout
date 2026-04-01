@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 
-import { sprout } from "./index";
+import { sprout } from "@/index";
 
 describe("Sprout", () => {
   test("should be seedable and produce consistent results", () => {
@@ -46,7 +46,7 @@ describe("Sprout", () => {
       const result2 = sprout.unique(items);
       const result3 = sprout.unique(items);
 
-      expect([result1, result2, result3]).toEqual(expect.arrayContaining(items));
+      expect(new Set([result1, result2, result3])).toEqual(new Set(items));
       expect(new Set([result1, result2, result3]).size).toBe(3);
     });
 
@@ -60,6 +60,18 @@ describe("Sprout", () => {
     test("should throw error for empty array", () => {
       expect(() => sprout.unique([])).toThrow("unique() called with an empty array");
     });
+
+    test("should throw internal OOB for array containing undefined", () => {
+      sprout(1);
+      expect(() => {
+        sprout.unique([undefined]);
+      }).toThrow("internal OOB");
+    });
+
+    test("should throw internal swap OOB during shuffle with undefined elements", () => {
+      sprout(1);
+      expect(() => sprout.unique([undefined, undefined] as unknown[])).toThrow("internal swap OOB");
+    });
   });
 
   describe("from function", () => {
@@ -69,17 +81,27 @@ describe("Sprout", () => {
       expect(results).toHaveLength(3);
       expect(results.every((name) => typeof name === "string")).toBe(true);
     });
+
+    test("should return empty array for count 0", () => {
+      expect(sprout.from(0, () => "x")).toEqual([]);
+    });
+  });
+
+  describe("unique cache eviction", () => {
+    test("should evict entries when cache exceeds 1000", () => {
+      sprout(99_999);
+      for (let i = 0; i <= 1002; i++) {
+        sprout.unique([`cache_eviction_item_${i}`]);
+      }
+    });
   });
 
   describe("domains", () => {
     test("person domain should work", () => {
-      // Set seed for consistent test
       sprout(12_345);
       const name = sprout.person.name();
-      // Reset seed to ensure same name
       sprout(12_345);
       const lastName = sprout.person.lastName();
-      // Reset seed to ensure consistency
       sprout(12_345);
       const fullName = sprout.person.fullName();
 
@@ -95,12 +117,18 @@ describe("Sprout", () => {
       const postalCode = sprout.address.postalCode();
       const street = sprout.address.streetAddress();
       const buildingNumber = sprout.address.buildingNumber();
+      const countryName = sprout.address.countryName();
+      const countryCode = sprout.address.countryCode();
+      const fullAddress = sprout.address.fullAddress();
 
       expect(typeof city).toBe("string");
       expect(typeof state).toBe("string");
       expect(typeof postalCode).toBe("string");
       expect(typeof street).toBe("string");
       expect(typeof buildingNumber).toBe("string");
+      expect(typeof countryName).toBe("string");
+      expect(typeof countryCode).toBe("string");
+      expect(typeof fullAddress).toBe("string");
       expect(postalCode).toMatch(/^\d{5}-\d{3}$/);
     });
 

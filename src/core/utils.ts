@@ -1,4 +1,4 @@
-import type { Rng } from "./rng";
+import type { Rng } from "@/core/rng";
 
 export function pick(rng: Rng, array: string[]): string {
   const length_ = array.length;
@@ -20,10 +20,7 @@ export type GeneratorWithPick<T> = (() => T) & {
   source?: readonly T[];
 };
 
-export function fromArray(
-  rng: Rng,
-  source: string[],
-): GeneratorWithPick<string> {
+export function fromArray(rng: Rng, source: string[]): GeneratorWithPick<string> {
   const fn = (() => pick(rng, source)) as GeneratorWithPick<string>;
 
   fn.pick = (n: number) => {

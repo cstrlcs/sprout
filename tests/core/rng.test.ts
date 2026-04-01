@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 
-import { hashSeed, mulberry32 } from "./rng";
+import { hashSeed, mulberry32 } from "@/core/rng";
 
 describe("RNG", () => {
   describe("hashSeed", () => {
